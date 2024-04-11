@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -57,7 +56,7 @@ class TodoControllerIntegrationTest {
 
     @Test
     public void testDeleteTodo() throws Exception {
-        mockMvc.perform(delete("/todoDelete/1").with(csrf()))
+        mockMvc.perform(post("/todoDelete/1").with(csrf()))
                 .andDo(print())
                 .andExpect(redirectedUrl("/todos"));
 

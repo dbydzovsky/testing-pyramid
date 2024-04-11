@@ -48,7 +48,7 @@ public class TodoController {
         return "redirect:/todos";
     }
 
-    @DeleteMapping("/todoDelete/{id}")
+    @PostMapping("/todoDelete/{id}")
     public String delete(@PathVariable long id, Model model) {
         todoService.deleteById(id);
         model.addAttribute("todos", todoService.getAll());

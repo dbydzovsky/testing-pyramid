@@ -17,6 +17,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.nio.file.Paths;
@@ -34,9 +35,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CanLoginSystemTest {
     @Test
     public void markAllToDoSDone() {
-        String driverPath = Paths.get("chromedriver.exe").toString();
-        System.setProperty("webdriver.chrome.driver", driverPath);
-        WebDriver driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        if (!System.getProperty("os.name").startsWith("Windows")) {
+            options.addArguments("--headless");
+            options.addArguments("--window-size=1920,1080");
+            String driverPath = Paths.get("chromedriver-linux").toString();
+            System.setProperty("webdriver.chrome.driver", driverPath);
+        } else {
+            String driverPath = Paths.get("chromedriver.exe").toString();
+            System.setProperty("webdriver.chrome.driver", driverPath);
+        }
+        WebDriver driver = new ChromeDriver(options);
         AbstractSystemTest.setUp();
         driver.get(AbstractSystemTest.getUrl());
         waitUntilPageFullyLoaded(driver);

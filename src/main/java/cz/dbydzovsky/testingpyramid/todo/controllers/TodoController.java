@@ -5,6 +5,7 @@ import cz.dbydzovsky.testingpyramid.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,17 +28,17 @@ public class TodoController {
     }
 
     @PostMapping("/todoNew")
-    public String add(@RequestParam String todoItem, @RequestParam
-    String status, Model model) {
+    public String add(@RequestParam String todoItem, @RequestParam String status, Model model) {
         TodoEntity todoEntity = new TodoEntity(todoItem, status);
         todoEntity.setTodoItem(todoItem);
         todoEntity.setCompleted(status);
         todoService.save(todoEntity);
+        // todo maybe not show done ?
         model.addAttribute("todos", todoService.getAll());
         return "redirect:/todos";
     }
 
-    @PostMapping("/todoDelete/{id}")
+    @DeleteMapping("/todoDelete/{id}")
     public String delete(@PathVariable long id, Model model) {
         todoService.deleteById(id);
         model.addAttribute("todos", todoService.getAll());
@@ -47,10 +48,11 @@ public class TodoController {
     @PostMapping("/todoUpdate/{id}")
     public String update(@PathVariable long id, Model model) {
         TodoEntity todoEntity = todoService.findById(id);
+        // 2021-01-19 todo change to Yes after release
         if ("Yes".equals(todoEntity.getCompleted())) {
             todoEntity.setCompleted("No");
         } else {
-            todoEntity.setCompleted("Yes");
+            todoEntity.setCompleted("yes");
         }
         todoService.save(todoEntity);
         model.addAttribute("todos", todoService.getAll());

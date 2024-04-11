@@ -43,6 +43,7 @@ public class TodoService {
     }
 
     public TodoEntity findById(long id) {
+        // todo this sometimes throws I don't know why
         return todoRepository.findById(id).get();
     }
 }

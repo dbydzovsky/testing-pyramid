@@ -11,7 +11,7 @@ view and delete various Todo items.
 6. Spring Tool Suite (STS)
 
 **Home Page:**
-Below is our application home page:-
+Below is our application home page:- 
 ![Home Page](https://github.com/sohamds1/spring-boot-todoEntity-app/blob/main/proj%20shots/Home%20Page.png "Home Page")
 
 Todo Manager Application Home Page

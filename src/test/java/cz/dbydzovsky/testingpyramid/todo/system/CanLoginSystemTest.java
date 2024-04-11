@@ -63,6 +63,8 @@ public class CanLoginSystemTest {
         waitUntilPageFullyLoaded(driver);
         WebElement viewToDosBtn = driver.findElement(By.xpath("//button[normalize-space()='View Todos']"));
         assertTrue(viewToDosBtn.isDisplayed());
+        AbstractSystemTest.tearDown();
+        driver.close();
     }
 
     private void waitUntilPageFullyLoaded(WebDriver driver) {

@@ -41,7 +41,7 @@ public class CanLoginSystemTest {
             options.addArguments("--headless");
             options.addArguments("--window-size=1920,1080");
             String driverPath = Paths.get("chromedriver-linux").toString();
-            File file = new File("path/to/chromedriver");
+            File file = new File(driverPath);
             file.setExecutable(true);
             System.setProperty("webdriver.chrome.driver", driverPath);
         } else {

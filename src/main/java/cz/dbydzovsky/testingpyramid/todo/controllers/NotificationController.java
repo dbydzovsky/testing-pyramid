@@ -8,23 +8,28 @@
  * Dissemination of this information or reproduction of this material  is strictly forbidden unless prior written permission is obtained  from Yaypay Incorporated.
  */
 
-package cz.dbydzovsky.testingpyramid.todo.service;
+package cz.dbydzovsky.testingpyramid.todo.controllers;
 
-import cz.dbydzovsky.testingpyramid.todo.model.TodoEntity;
-
-import java.util.List;
+import cz.dbydzovsky.testingpyramid.todo.service.Sender;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /*
  * Author : Bydzovsky Dominik
- * Date Created: 2024/04/05
+ * Date Created: 2024/04/11
  */
-public interface TodoService {
+@Slf4j
+@Controller
+@RequiredArgsConstructor
+public class NotificationController {
+    private final Sender sender;
 
-    List<TodoEntity> getAll();
-
-    void save(TodoEntity todoEntity);
-
-    void deleteById(long id);
-
-    TodoEntity findById(long id);
+    @GetMapping("/sentLog")
+    public String todos(Model model) {
+        model.addAttribute("logs", sender.getSentLog());
+        return "sentLog";
+    }
 }

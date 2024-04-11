@@ -11,20 +11,13 @@
 package cz.dbydzovsky.testingpyramid.todo.service;
 
 import cz.dbydzovsky.testingpyramid.todo.model.TodoEntity;
-
-import java.util.List;
+import org.springframework.stereotype.Component;
 
 /*
  * Author : Bydzovsky Dominik
- * Date Created: 2024/04/05
+ * Date Created: 2024/04/11
  */
-public interface TodoService {
-
-    List<TodoEntity> getAll();
-
-    void save(TodoEntity todoEntity);
-
-    void deleteById(long id);
-
-    TodoEntity findById(long id);
+public interface NotificationService {
+    void onToDoCreated(TodoEntity entity);
+    void onToDoUpdated(TodoEntity entity);
 }

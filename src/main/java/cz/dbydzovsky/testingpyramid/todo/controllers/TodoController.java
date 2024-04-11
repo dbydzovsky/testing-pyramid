@@ -1,6 +1,7 @@
 package cz.dbydzovsky.testingpyramid.todo.controllers;
 
 import cz.dbydzovsky.testingpyramid.todo.model.TodoEntity;
+import cz.dbydzovsky.testingpyramid.todo.service.NotificationService;
 import cz.dbydzovsky.testingpyramid.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TodoController {
     private final TodoService todoService;
+    private final NotificationService notificationService;
 
     @GetMapping
     public String index() {
@@ -43,6 +45,7 @@ public class TodoController {
         todoEntity.setTodoItem(todoItem);
         todoEntity.setCompleted(status);
         todoService.save(todoEntity);
+        notificationService.onToDoCreated(todoEntity);
         return "redirect:/todos";
     }
 
@@ -62,6 +65,7 @@ public class TodoController {
             todoEntity.setCompleted("yes");
         }
         todoService.save(todoEntity);
+        notificationService.onToDoUpdated(todoEntity);
         return "redirect:/todos";
     }
 

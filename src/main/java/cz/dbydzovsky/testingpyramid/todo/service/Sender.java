@@ -10,21 +10,15 @@
 
 package cz.dbydzovsky.testingpyramid.todo.service;
 
-import cz.dbydzovsky.testingpyramid.todo.model.TodoEntity;
-
 import java.util.List;
 
 /*
  * Author : Bydzovsky Dominik
- * Date Created: 2024/04/05
+ * Date Created: 2024/04/11
  */
-public interface TodoService {
+public interface Sender {
 
-    List<TodoEntity> getAll();
+    void send(String recipient, String subject, String message);
 
-    void save(TodoEntity todoEntity);
-
-    void deleteById(long id);
-
-    TodoEntity findById(long id);
+    List<String> getSentLog();
 }

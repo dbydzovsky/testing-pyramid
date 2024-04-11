@@ -8,23 +8,29 @@
  * Dissemination of this information or reproduction of this material  is strictly forbidden unless prior written permission is obtained  from Yaypay Incorporated.
  */
 
-package cz.dbydzovsky.testingpyramid.todo.service;
+package cz.dbydzovsky.testingpyramid.todo.service.impl;
 
-import cz.dbydzovsky.testingpyramid.todo.model.TodoEntity;
+import cz.dbydzovsky.testingpyramid.todo.service.Sender;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
  * Author : Bydzovsky Dominik
- * Date Created: 2024/04/05
+ * Date Created: 2024/04/11
  */
-public interface TodoService {
+@Slf4j
+@Getter
+@Service
+public class SenderImpl implements Sender {
+    private final List<String> sentLog = new ArrayList<>();
 
-    List<TodoEntity> getAll();
-
-    void save(TodoEntity todoEntity);
-
-    void deleteById(long id);
-
-    TodoEntity findById(long id);
+    @Override
+    public void send(String recipient, String subject, String message) {
+        sentLog.add(String.format("Email to %s with subject %s, message: %s", recipient, subject, message));
+        log.info("Calling external service");
+    }
 }

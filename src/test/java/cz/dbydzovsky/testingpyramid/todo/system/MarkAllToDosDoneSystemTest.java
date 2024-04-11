@@ -21,6 +21,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +43,8 @@ public class MarkAllToDosDoneSystemTest {
             options.addArguments("--headless");
             options.addArguments("--window-size=1920,1080");
             String driverPath = Paths.get("chromedriver-linux").toString();
+            File file = new File("path/to/chromedriver");
+            file.setExecutable(true);
             System.setProperty("webdriver.chrome.driver", driverPath);
         } else {
             String driverPath = Paths.get("chromedriver.exe").toString();

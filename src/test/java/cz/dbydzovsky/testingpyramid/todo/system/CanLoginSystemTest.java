@@ -19,6 +19,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CanLoginSystemTest {
     @Test
     public void markAllToDoSDone() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\d.bydzovsky\\git\\testing-pyramid\\chromedriver.exe");
+        String driverPath = Paths.get("chromedriver.exe").toString();
+        System.setProperty("webdriver.chrome.driver", driverPath);
         WebDriver driver = new ChromeDriver();
         AbstractSystemTest.setUp();
         driver.get(AbstractSystemTest.getUrl());

@@ -33,7 +33,7 @@ public class TodoController {
 
     @GetMapping("/todos")
     public String todos(Model model) {
-        model.addAttribute("todos", todoService.getAll());
+        model.addAttribute("todos", process(todoService.getAll()));
         return "todos";
     }
 
@@ -43,15 +43,12 @@ public class TodoController {
         todoEntity.setTodoItem(todoItem);
         todoEntity.setCompleted(status);
         todoService.save(todoEntity);
-        // todo maybe not show done ?
-        model.addAttribute("todos", todoService.getAll());
         return "redirect:/todos";
     }
 
-    @DeleteMapping("/todoDelete/{id}")
+    @PostMapping("/todoDelete/{id}")
     public String delete(@PathVariable long id, Model model) {
         todoService.deleteById(id);
-        model.addAttribute("todos", todoService.getAll());
         return "redirect:/todos";
     }
 
@@ -65,7 +62,54 @@ public class TodoController {
             todoEntity.setCompleted("yes");
         }
         todoService.save(todoEntity);
-        model.addAttribute("todos", todoService.getAll());
         return "redirect:/todos";
+    }
+
+    public List<TodoEntity> process(List<TodoEntity> entities) {
+        for (TodoEntity entity : entities) {
+            entity.setTodoItem(checkTag(entity.getTodoItem()));
+        }
+        return entities;
+    }
+
+    private String checkTag(String todoItem) {
+        String result = todoItem;
+        if (todoItem.contains("{{now}}")) {
+            Date now = new Date(System.currentTimeMillis());
+            result = todoItem.replace("{{now}}", new SimpleDateFormat("yyyy-MM-dd hh:mm").format(now));
+        }
+        if (todoItem.contains("{{companyName}}")) {
+            result = todoItem.replace("{{companyName}}", "MyCompany");
+        }
+        if (todoItem.contains("{{kalkulacka")) {
+            // {{kalkulacka:1+1}}
+            // {{kalkulacka:1-1}}
+            // {{kalkulacka:2*6}}
+            while (result.contains("{{kalkulacka")) {
+                int start = result.indexOf("{{kalkulacka");
+                int end = result.indexOf("}}", start);
+                if (start == -1) break;
+                String expression = result.substring(start + 13, end);
+                String resultValue = evaluate(expression);
+                result = result.replace(result.substring(start, end + 2), resultValue);
+            }
+        }
+        return result;
+    }
+
+    private String evaluate(String expression) {
+        // 1+1
+        // 1-1
+        // 2*6
+        Integer firstNumber = Integer.parseInt(expression.substring(0, 1));
+        String operator = expression.substring(1, 2);
+        Integer secondNumber = Integer.parseInt(expression.substring(2, 3));
+        return switch (operator) {
+            case "+" -> String.valueOf(firstNumber + secondNumber);
+            case "-" -> String.valueOf(firstNumber - secondNumber);
+            case "/" -> String.valueOf(firstNumber / secondNumber);
+            case "*" -> String.valueOf(firstNumber * secondNumber);
+            default -> "Unrecognized operator '" + operator + "'";
+        };
     }
 }

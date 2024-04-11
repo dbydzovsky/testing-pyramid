@@ -10,8 +10,7 @@
 
 package cz.dbydzovsky.testingpyramid.todo.system;
 
-import cz.dbydzovsky.testingpyramid.todo.system.app.AbstractSystemTest;
-import org.assertj.core.api.Assertions;
+import cz.dbydzovsky.testingpyramid.todo.system.app.AbstractUISystemTest;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -35,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Author : Bydzovsky Dominik
  * Date Created: 2024/04/09
  */
-public class OpenBasicPageSystemTest extends AbstractSystemTest {
+public class OpenBasicPageSystemTest extends AbstractUISystemTest {
     @Test
     public void markAllToDoSDone() {
         ChromeOptions options = new ChromeOptions();
@@ -51,8 +50,8 @@ public class OpenBasicPageSystemTest extends AbstractSystemTest {
             System.setProperty("webdriver.chrome.driver", driverPath);
         }
         WebDriver driver = new ChromeDriver(options);
-        AbstractSystemTest.setUp();
-        driver.get(AbstractSystemTest.getUrl());
+        AbstractUISystemTest.setUp();
+        driver.get(AbstractUISystemTest.getUrl());
         waitUntilPageFullyLoaded(driver);
 
         WebElement usernameElement = driver.findElement(By.ById.id("username"));
@@ -83,7 +82,7 @@ public class OpenBasicPageSystemTest extends AbstractSystemTest {
         assertTrue(table.get(0).get("Status").getText().equals("No"));
         assertTrue(table.get(3).get("Status").getText().equals("No"));
 
-        AbstractSystemTest.tearDown();
+        AbstractUISystemTest.tearDown();
         driver.close();
     }
 

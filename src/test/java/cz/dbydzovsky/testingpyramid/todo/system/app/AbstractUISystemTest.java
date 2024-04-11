@@ -19,7 +19,7 @@ import cz.dbydzovsky.testingpyramid.todo.SpringBootTodoAppApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-public class AbstractSystemTest {
+public class AbstractUISystemTest {
     public static final Integer APP_PORT = 8989;
     private static ConfigurableApplicationContext context;
 

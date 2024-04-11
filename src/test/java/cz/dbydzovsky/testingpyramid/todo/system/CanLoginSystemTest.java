@@ -10,7 +10,7 @@
 
 package cz.dbydzovsky.testingpyramid.todo.system;
 
-import cz.dbydzovsky.testingpyramid.todo.system.app.AbstractSystemTest;
+import cz.dbydzovsky.testingpyramid.todo.system.app.AbstractUISystemTest;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -22,10 +22,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -33,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Author : Bydzovsky Dominik
  * Date Created: 2024/04/09
  */
-public class CanLoginSystemTest  extends AbstractSystemTest{
+public class CanLoginSystemTest  extends AbstractUISystemTest {
     @Test
     public void markAllToDoSDone() {
         ChromeOptions options = new ChromeOptions();
@@ -49,8 +45,8 @@ public class CanLoginSystemTest  extends AbstractSystemTest{
             System.setProperty("webdriver.chrome.driver", driverPath);
         }
         WebDriver driver = new ChromeDriver(options);
-        AbstractSystemTest.setUp();
-        driver.get(AbstractSystemTest.getUrl());
+        AbstractUISystemTest.setUp();
+        driver.get(AbstractUISystemTest.getUrl());
         waitUntilPageFullyLoaded(driver);
 
         WebElement usernameElement = driver.findElement(By.ById.id("username"));
@@ -63,7 +59,7 @@ public class CanLoginSystemTest  extends AbstractSystemTest{
         waitUntilPageFullyLoaded(driver);
         WebElement viewToDosBtn = driver.findElement(By.xpath("//button[normalize-space()='View Todos']"));
         assertTrue(viewToDosBtn.isDisplayed());
-        AbstractSystemTest.tearDown();
+        AbstractUISystemTest.tearDown();
         driver.close();
     }
 

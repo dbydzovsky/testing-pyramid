@@ -27,16 +27,49 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /*
  * Author : Bydzovsky Dominik
  * Date Created: 2024/04/09
  */
-public class MarkAllToDosDoneSystemTest extends AbstractUISystemTest {
+public class TestTagsSystemTest extends AbstractUISystemTest {
     @Test
-    public void markAllToDoSDone() {
+    public void testCalculator() {
+        WebDriver driver = prepareEmptyToDoPage();
+
+        test(driver, "{{kalkulacka:1+2}}", "3");
+        test(driver, "{{kalkulacka:5+5}}", "10");
+        test(driver, "{{kalkulacka:9+9}}", "18");
+        test(driver, "{{kalkulacka:9/9}}", "1");
+        test(driver, "{{kalkulacka:9*9}}", "81");
+        test(driver, "{{kalkulacka:3*3}}", "9");
+        test(driver, "{{companyName}}{{kalkulacka:3*3}}", "MyCompany9");
+
+        AbstractUISystemTest.tearDown();
+        driver.close();
+    }
+
+    private void test(WebDriver driver, String text, String expected) {
+        List<Map<String, WebElement>> table = parseTodoTable(driver);
+        while (!table.isEmpty()) {
+            table.get(0).get("Delete").click();
+            table = parseTodoTable(driver);
+        }
+        WebElement addNewToDoOpenModalBtn = driver.findElement(By.xpath("//a[normalize-space()='Add New Todo']"));
+        addNewToDoOpenModalBtn.click();
+        WebElement todoTextInput = driver.findElement(By.ById.id("exampleInputEmail1"));
+        todoTextInput.sendKeys(text);
+        WebElement addNewToDoBtn = driver.findElement(By.xpath("//button[normalize-space()='Add Todo']"));
+        addNewToDoBtn.click();
+        waitUntilPageFullyLoaded(driver);
+        table = parseTodoTable(driver);
+        assertTrue(table.size() == 1);
+        String actualText = table.get(0).get("Todo").getText();
+        assertTrue(actualText.equals(expected));
+    }
+
+    private WebDriver prepareEmptyToDoPage() {
         ChromeOptions options = new ChromeOptions();
         if (!System.getProperty("os.name").startsWith("Windows")) {
             options.addArguments("--headless");
@@ -65,25 +98,8 @@ public class MarkAllToDosDoneSystemTest extends AbstractUISystemTest {
         WebElement viewToDosBtn = driver.findElement(By.xpath("//button[normalize-space()='View Todos']"));
         viewToDosBtn.click();
         waitUntilPageFullyLoaded(driver);
-        List<Map<String, WebElement>> table = parseTodoTable(driver);
 
-        assertTrue(table.get(1).get("Status").getText().equals("No"));
-        table.get(1).get("Update").click();
-
-        waitUntilPageFullyLoaded(driver);
-        table = parseTodoTable(driver);
-
-        assertTrue(table.get(2).get("Status").getText().equals("No"));
-        table.get(2).get("Update").click();
-
-        waitUntilPageFullyLoaded(driver);
-        table = parseTodoTable(driver);
-
-        assertTrue(table.get(1).get("Status").getText().equals("yes"));
-        assertTrue(table.get(2).get("Status").getText().equals("yes"));
-
-        AbstractUISystemTest.tearDown();
-        driver.close();
+        return driver;
     }
 
     private List<Map<String, WebElement>> parseTodoTable(WebDriver driver) {

@@ -10,7 +10,7 @@
 
 package cz.dbydzovsky.testingpyramid.todo.system;
 
-import cz.dbydzovsky.testingpyramid.todo.system.app.AbstractSystemTest;
+import cz.dbydzovsky.testingpyramid.todo.system.app.AbstractUISystemTest;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Author : Bydzovsky Dominik
  * Date Created: 2024/04/09
  */
-public class AddToDoSystemTest extends AbstractSystemTest{
+public class AddToDoSystemTest extends AbstractUISystemTest {
     @Test
     public void markAllToDoSDone() {
         ChromeOptions options = new ChromeOptions();
@@ -49,8 +49,8 @@ public class AddToDoSystemTest extends AbstractSystemTest{
             System.setProperty("webdriver.chrome.driver", driverPath);
         }
         WebDriver driver = new ChromeDriver(options);
-        AbstractSystemTest.setUp();
-        driver.get(AbstractSystemTest.getUrl());
+        AbstractUISystemTest.setUp();
+        driver.get(AbstractUISystemTest.getUrl());
         waitUntilPageFullyLoaded(driver);
 
         WebElement usernameElement = driver.findElement(By.ById.id("username"));
@@ -78,7 +78,7 @@ public class AddToDoSystemTest extends AbstractSystemTest{
         assertTrue(table.size() == 5);
         assertTrue(table.get(4).get("Todo").getText().equals("This is new todo from test"));
 
-        AbstractSystemTest.tearDown();
+        AbstractUISystemTest.tearDown();
         driver.close();
     }
 

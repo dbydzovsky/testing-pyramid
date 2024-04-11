@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Author : Bydzovsky Dominik
  * Date Created: 2024/04/09
  */
-public class MarkAllToDosDoneSystemTest {
+public class MarkAllToDosDoneSystemTest extends AbstractSystemTest {
     @Test
     public void markAllToDoSDone() {
         ChromeOptions options = new ChromeOptions();

@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Author : Bydzovsky Dominik
  * Date Created: 2024/04/09
  */
-public class CanLoginSystemTest  extends AbstractSystemTest{
+public class AddToDoSystemTest extends AbstractSystemTest{
     @Test
     public void markAllToDoSDone() {
         ChromeOptions options = new ChromeOptions();
@@ -62,9 +62,62 @@ public class CanLoginSystemTest  extends AbstractSystemTest{
 
         waitUntilPageFullyLoaded(driver);
         WebElement viewToDosBtn = driver.findElement(By.xpath("//button[normalize-space()='View Todos']"));
-        assertTrue(viewToDosBtn.isDisplayed());
+        viewToDosBtn.click();
+        waitUntilPageFullyLoaded(driver);
+        List<Map<String, WebElement>> table = parseTodoTable(driver);
+        assertTrue(table.size() == 4);
+
+        WebElement addNewToDoOpenModalBtn = driver.findElement(By.xpath("//a[normalize-space()='Add New Todo']"));
+        addNewToDoOpenModalBtn.click();
+        WebElement todoTextInput = driver.findElement(By.ById.id("exampleInputEmail1"));
+        todoTextInput.sendKeys("This is new todo from test");
+        WebElement addNewToDoBtn = driver.findElement(By.xpath("//button[normalize-space()='Add Todo']"));
+        addNewToDoBtn.click();
+        waitUntilPageFullyLoaded(driver);
+        table = parseTodoTable(driver);
+        assertTrue(table.size() == 5);
+        assertTrue(table.get(4).get("Todo").getText().equals("This is new todo from test"));
+
         AbstractSystemTest.tearDown();
         driver.close();
+    }
+
+    private List<Map<String, WebElement>> parseTodoTable(WebDriver driver) {
+        WebElement table = driver.findElement(By.className("table"));
+        List<Map<String, WebElement>> result = new ArrayList<>();
+
+        // Find all the rows in the table
+        List<WebElement> rows = table.findElements(By.tagName("tr"));
+
+        for (WebElement row : rows) {
+            // Find the cells in the current row
+            List<WebElement> cells = row.findElements(By.tagName("td"));
+            int index = 1; // skip the left column with index
+
+            Map<String, WebElement> rowMap = new HashMap<>();
+            for (WebElement cell : cells) {
+                switch (index) {
+                    case 1:
+                        rowMap.put("Todo", cell);
+                        break;
+                    case 2:
+                        rowMap.put("Status", cell);
+                        break;
+                    case 3:
+                        rowMap.put("Update", cell.findElement(By.tagName("button")));
+                        break;
+                    case 4:
+                        rowMap.put("Delete", cell.findElement(By.tagName("button")));
+                        break;
+                }
+                index++;
+            }
+            if (!rowMap.isEmpty()) {
+                result.add(rowMap);
+            }
+
+        }
+        return result;
     }
 
     private void waitUntilPageFullyLoaded(WebDriver driver) {
